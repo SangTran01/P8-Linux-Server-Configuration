@@ -307,9 +307,9 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * Navigate to `Credentials`, and edit your `OAuth 2.0 client IDs`:
 
     
-To get Facebook authorization working, do this:
+* To get Facebook authorization working, do this:
 
-    * Go to Facebook developers page: `https://developers.facebook.com/apps and select your app`.
+    * Go to Facebook developers page: `https://developers.facebook.com/apps` and select your app.
 
     * Go to settings and fill in your PUBLIC-IP-ADDRESS and don't forget to edit login as well 
 

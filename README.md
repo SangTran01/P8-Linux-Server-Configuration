@@ -51,8 +51,7 @@ Package Name | Description
 **python-psycopg2** | PostgreSQL adapter for Python
 **oauth2** | Authorization framework for third-party login (Google and Facebook)
 **google-api-python-client** | Google API for OAuth login
-**fail2ban** | Protection against suspicious site activity by IP banning
-**Glances** | Application monitor for host bugs
+
 
 ## Configuration Summary
 
@@ -301,37 +300,21 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * below the `ServerAdmin` paste `ServerAlias ec2-35-162-137-207.us-west-2.compute.amazonaws.com`
     * make sure the virtual host is enabled `sudo a2ensite catalog`
     * restart apache server `sudo service apache2 restart`
-    * in your google developer console add your host name and IP address to Authorized Javascript origins. And add 
-    ec2-35-162-137-207.us-west-2.compute.amazonaws.com/ouath2callback to the Authorized redirect URIs.
-    * Note that it may take a few minutes for you to see changes, so if you still can't login right away don't panic!
+
+* To get Google+ authorization working, do this:
+
+    * On the Developer Console: `http://console.developers.google.com`, select your Project.
+
+    * Navigate to `Credentials`, and edit your `OAuth 2.0 client IDs`:
+
+    
+To get Facebook authorization working, do this:
+
+    * Go to Facebook developers page: `https://developers.facebook.com/apps and select your app`.
+
+    * Go to settings and fill in your PUBLIC-IP-ADDRESS and don't forget to edit login as well 
 
 
-##Exceeds specs requirements
-
-
-* Install glances for monitoring (Exceeds specs requirement)
-    * install glances `sudo pip install Glances`
-    * run `glances` to see monitor
-
-* Configure firewall to monitor for unsuccessful attempts and use cron scripts to automatically manage packages (Exceeds specs requirement)
-
-    * install fail2band `sudo apt-get install fail2ban`
-    * copy config file to .local `sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local`
-    * open .local config file to set parameters `sudo nano /etc/fail2ban/jail.local` Make at least the following changes. You can change bantime or other settings as well. This will allow email with log info and set SSH to the correct port.
-
-    ```
-  destemail = YOURNAME@DOMAIN
-  action = %(action_mwl)s
-  under [ssh] change port = 2220
-  ```
-
-  * install sendmail`sudo apt-get install nginx sendmail`
-  * stop service `sudo service fail2ban stop`
-  * Start service `sudo service fail2ban start`
-
-  * install unattended-upgrades `sudo apt-get install unattended-upgrades`
-  * enable `sudo dpkg-reconfigure -plow unattended-upgrades`
-  * Automatically install security updates
 
 ## Sources used:
 [Configuring Linux Web Servers - Udacity.com](https://www.udacity.com/course/viewer#!/c-ud299-nd/l-4378692847/m-4799370031)
@@ -353,10 +336,6 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
 [Make .git directory web inaccessible](http://stackoverflow.com/questions/6142437/make-git-directory-web-inaccessible)
 
 [Fix google + Oauth issue - Udacity Forum](https://discussions.udacity.com/t/google-sign-in-problems/28191)
-
-[Using glances - Glances docs](http://glances.readthedocs.org/en/latest/glances-doc.html#configuration)
-
-[Use fail2ban to monitor login - digital ocean](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04)
 
 [Python 2 in virtual enviroment](http://joebergantine.com/blog/2015/apr/30/installing-python-2-and-python-3-alongside-each-ot/)
 

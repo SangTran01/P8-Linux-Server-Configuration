@@ -94,7 +94,7 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * Download private key
     * Move the private key file into the folder ~/.ssh (where ~ is your environment's home directory). So if you downloaded the file to the Downloads folder, just execute the following command in your terminal. `mv ~/Downloads/udacity_key.rsa ~/.ssh/`
     * Open your terminal and type in `chmod 600 ~/.ssh/udacity_key.rsa`
-    * In your terminal, type in `ssh -i ~/.ssh/udacity_key.rsa root@52.27.192.5`
+    * In your terminal, type in `ssh -i ~/.ssh/udacity_key.rsa root@35.162.137.207`
 
 
 * Create a new user named grader
@@ -106,7 +106,7 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
 * Give the grader the permission to sudo
     * The README file in the /etc/sudoers.d says:"please note that using the visudo command is the recommended way to update sudoers content, since it protects against many failure modes." so that's what we will do!
     * `sudo visudo`
-    * inside the file add `grader   ALL=(ALL:ALL) ALL` below the root user under "#User privilege specification"
+    * inside the file above `root ALL=(ALL=ALL) ALL` add `grader   ALL=(ALL:ALL) ALL` below the root user under "#User privilege specification"
     * save file(nano: `ctrl+x`, `Y`, Enter)
 
 
@@ -124,21 +124,19 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
 
 * Create SSH keys and copy to server manually:
     * On your local machine generate SSH key pair with: `ssh-keygen`
-    * save youkeygen file in your ssh directory `/Users/username/.ssh/` example full file path that could be used: `/Users/username/.ssh/project5`
+    * save your keygen file in your ssh directory `/Users/username/.ssh/` example full file path that could be used: `/Users/username/.ssh/id_rsa`
     * You can add a password to use encase your keygen file gets compromised(you will be prompted to enter this password when you connect with key pair)
     * login into grader account using password set during user creation `ssh -v grader@*Public-IP-Address* -p 2200`
     * Make .ssh directory`mkdir .ssh`
     * make file to store key`touch .ssh/authorized_keys`
-    * On your local machine read contents of the public key `cat .ssh/project5.pub`
+    * On your local machine read contents of the public key `cat .ssh/id_rsa.pub`
     * Copy the key and paste in the file you just created in grader `nano
 .ssh/authorized_keys` paste contents(ctr+v)
     * save file(nano: `ctrl+x`, `Y`, Enter)
     * Set permissions for files: `chmod 700 .ssh` `chmod 644 .ssh/authorized_keys`
     * Change `PasswordAuthentication` from `yes` back to `no`.  `nano /etc/ssh/sshd_config`
     * save file(nano: `ctrl+x`, `Y`, Enter)
-    * login with key pair: `ssh grader@Public-IP-Address* -p 2200 -i ~/.ssh/project5`
-
-    * alternatively you can use a shorter method found [here](https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server)
+    * login with key pair: `ssh grader@35.162.137.207 -p 2200`
 
 
 * Configure the Uncomplicated Firewall (UFW) to only allow  incoming connections for SSH (port 2200), HTTP (port 80),  and NTP (port 123)
@@ -164,7 +162,7 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * Restart Apache `sudo apache2ctl restart`
 
 
-* Install git, clone and setup your Catalog App project (from your GitHub repository from earlier in the Nanodegree program) so that it functions correctly when visiting your server’s IP address in a browser. Remember to set this up appropriately so that your .git directory is not publicly accessible via a browser!
+* Install git, clone and setup your Catalog App project (from your GitHub repository from earlier in the Nanodegree program) so that it functions correctly when visiting your server’s IP address in a browser.
 
 * install git
     * `sudo apt-get install git`
@@ -176,8 +174,8 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * Verify wsgi is enabled `sudo a2enmod wsgi`
 * Create flask app taken from [digitalocean](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps)
     * `cd /var/www`
-    * `sudo mkdir catalog`
-    * `cd catalog`
+    * `sudo mkdir Catalog`
+    * `cd Catalog`
     * `sudo mkdir catalog`
     * `cd catalog`
     * `sudo mkdir static templates`
@@ -209,15 +207,15 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
 
     ```
     <VirtualHost *:80>
-      ServerName 52.27.192.5
-      ServerAdmin admin@52.27.192.5
-      WSGIScriptAlias / /var/www/catalog/catalog.wsgi
-      <Directory /var/www/catalog/catalog/>
+      ServerName 35.162.137.207
+      ServerAdmin admin@35.162.137.207
+      WSGIScriptAlias / /var/www/Catalog/catalog.wsgi
+      <Directory /var/www/Catalog/catalog/>
           Order allow,deny
           Allow from all
       </Directory>
-      Alias /static /var/www/catalog/catalog/static
-      <Directory /var/www/catalog/catalog/static/>
+      Alias /static /var/www/Catalog/catalog/static
+      <Directory /var/www/Catalog/catalog/static/>
           Order allow,deny
           Allow from all
       </Directory>
@@ -227,10 +225,10 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
   </VirtualHost>
 ```
     * save file(nano: `ctrl+x`, `Y`, Enter)
-    * Enable `sudo a2ensite catalog`
+    * Enable `sudo a2ensite catalog.conf`
 
 * Create the wsgi file
-    * `cd /var/www/catalog`
+    * `cd /var/www/Catalog`
     * `sudo nano catalog.wsgi`
 
     ```
@@ -238,9 +236,9 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
   import sys
   import logging
   logging.basicConfig(stream=sys.stderr)
-  sys.path.insert(0,"/var/www/catalog/")
+  sys.path.insert(0,"/var/www/Catalog/")
 
-  from catalog import app as application
+  from project import app as application
   application.secret_key = 'Add your secret key'
   ```
 
@@ -249,12 +247,12 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
   * `sudo service apache2 restart`
 
 * Clone Github Repo
-    * `sudo git clone https://github.com/sageio/devpost.git`
-    * make sure you get hidden files iin move `shopt -s dotglob`. Move files from clone directory to catalog `mv /var/www/catalog/devpost/* /var/www/catalog/catalog/`
-    * remove clone directory `sudo rm -r devpost`
+    * `sudo git clone https://github.com/SangTran01/P5-Item-Catalog.git`
+    * Move files from clone directory to catalog `sudo mv /var/www/Catalog/P5-Item-Catalog/* /var/www/Catalog/catalog/`
+    * remove clone directory after files moved `sudo rm -r P5-Item-Catalog`
 
 * make .git inaccessible
-    * from `cd /var/www/catalog/` create .htaccess file `sudo nano .htaccess`
+    * from `cd /var/www/Catalog/` create .htaccess file `sudo nano .htaccess`
     * paste in `RedirectMatch 404 /\.git`
     * save file(nano: `ctrl+x`, `Y`, Enter)
 
@@ -262,11 +260,10 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * `source venv/bin/activate`
     * `pip install httplib2`
     * `pip install requests`
-    * `sudo pip install --upgrade oauth2client`
-    * `sudo pip install sqlalchemy`
+    * `pip install --upgrade oauth2client`
+    * `pip install sqlalchemy`
     * `pip install Flask-SQLAlchemy`
-    * `sudo pip install python-psycopg2`
-    * If you used any other packages in your project be sure to install those as well.
+    * `pip install python-psycopg2`
 
 
 * Install and configure PostgreSQL:
@@ -274,13 +271,12 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     * install additional models`sudo apt-get install postgresql-contrib`
     * by default no remote connections are [not allowed](http://www.postgresql.org/docs/9.2/static/auth-pg-hba-conf.html)
     * config database_setup.py `sudo nano database_setup.py`
-    * `python engine = create_engine('postgresql://catalog:db-password@localhost/catalog')`
-    * repeat for application.py(main.py)
-    * copy your main app.py file into the __init__.py file `mv app.py __init__.py`
+    * `python engine = create_engine('postgresql://catalog:grader@localhost/catalog')`
+    * repeat for application.py(project.py)
     * Add catalog user `sudo adduser catalog`
     * login as postgres super user`sudo su - postgres`
     * enter postgres`psql`
-    * Create user catalog`CREATE USER catalog WITH PASSWORD 'db-password';`
+    * Create user catalog`CREATE USER catalog WITH PASSWORD 'grader';`
     * Change role of user catalog to creatDB` ALTER USER catalog CREATEDB;`
     * List all users and roles to verify`\du`
     * Create new DB "catalog" with own of catalog`CREATE DATABASE catalog WITH OWNER catalog;`
@@ -292,20 +288,21 @@ Reference: [Udacity](https://www.udacity.com/account#!/development_environment)
     *  Setup your database schema `python database_setup.py`
 
     * I had problems importing psycopg2 [this](http://stackoverflow.com/questions/5629368/installing-psycopg2-into-virtualenv-when-postgresql-is-not-installed-on-developm) stack overflow post helped me
-    * retstart apache `sudo service apache2 restart`
+    * restart apache `sudo service apache2 restart`
 
-    * I was getting a `No such file or directory: 'client_secrets.json'` error. I fixed using a raw path to the file `open(r'/var/www/catalog/catalog/client_secrets.json', 'r').read())...` You'll also need to do this for any other instances of the file path
+    * I was getting a `No such file or directory: 'client_secrets.json'` error. I fixed using a raw path to the file `open(r'/var/www/Catalog/catalog/client_secrets.json', 'r').read())...` You'll also need to do this for facebook login as well.
     [stack overflow](http://stackoverflow.com/questions/12201928/python-open-method-ioerror-errno-2-no-such-file-or-directory)
 
 
 * fix OAuth to work with hosted Application
         * Google wont allow the IP address to make redirects so we need to set up the host name address to be usable.
     * go to [http://www.hcidata.info/host2ip.cgi](http://www.hcidata.info/host2ip.cgi) to get your host name by entering your public IP address Udacity gave you.
-    * open apache configbfile `sudo nano /etc/apache2/sites-available/catalog.conf`
-    * below the `ServerAdmin` paste `ServerAlias YOURHOSTNAME`
+    * open apache configfile `sudo nano /etc/apache2/sites-available/catalog.conf`
+    * below the `ServerAdmin` paste `ServerAlias ec2-35-162-137-207.us-west-2.compute.amazonaws.com`
     * make sure the virtual host is enabled `sudo a2ensite catalog`
     * restart apache server `sudo service apache2 restart`
-    * in your google developer console add your host name and IP address to Authorized Javascript origins. And add YOURHOSTNAME/ouath2callback to the Authorized redirect URIs.
+    * in your google developer console add your host name and IP address to Authorized Javascript origins. And add 
+    ec2-35-162-137-207.us-west-2.compute.amazonaws.com/ouath2callback to the Authorized redirect URIs.
     * Note that it may take a few minutes for you to see changes, so if you still can't login right away don't panic!
 
 

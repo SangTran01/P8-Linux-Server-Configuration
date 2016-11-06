@@ -2,9 +2,10 @@
 
 Linux distribution on a virtual machine, prepared to host web applications, install updates and securing it from a number of attack vectors.
 
-This Project is in fulfilment of the Project 5 [Udacity Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004). It deploys [Project 3](https://github.com/elnobun/Item-Catalog-Movie-Collection-App-/tree/master/vagrant) "Item Catalog - Movie Collection App" on the virtual machine, and is reacheable under the AWS - server at http://ec2-52-39-26-86.us-west-2.compute.amazonaws.com.
+This is Project 8 for Udacity FullStack Nanodegree
+It deploys [Project 5](https://github.com/SangTran01/P5-Item-Catalog) "Item Catalog - Art Collection" on the virtual machine, and is reacheable under the AWS - server at http://ec2-35-162-137-207.us-west-2.compute.amazonaws.com/.
 
-**Note** : By the time you are viewing this page, and trying to access the website via the IP links, the website might be off the live server. Take note. However, the process to achieve the same result, is still in tact below. Good luck!.
+**Note** : By the time you are viewing this page, and trying to access the website via the IP links, the website might be off the live server. Take note. However, the process to achieve the same result, is still in tact below.
 
 This Project is managed by Sang Tran
 
@@ -17,7 +18,7 @@ This Project is managed by Sang Tran
 ## Project Access
 #### IP address
 
-**`52.39.26.86`**
+**`35.162.137.207`**
 
 #### SSH Port
 
@@ -25,19 +26,14 @@ This Project is managed by Sang Tran
 
 #### Web Application URL
 
-http://52.39.26.86/  
+http://35.162.137.207/  
 
 * AWS-Server: 
-http://ec2-52-39-26-86.us-west-2.compute.amazonaws.com
+http://ec2-35-162-137-207.us-west-2.compute.amazonaws.com/
  
 ## Project Overview 
 
 I configured a secured remote virtual machine to host a databse server, and web appllications which are data driven. This was accomlished through a provided Linux distribution by [Udacity](https://www.udacity.com), and an installed Apache2 server to serve Python Flask application that connects to PostgresSQL database.
-
-Result: Unregistered user page, running on http://52.39.26.86
-![public_page](https://cloud.githubusercontent.com/assets/15114201/14767906/7ff35b5a-0a21-11e6-84c5-cd0f2336e635.png)
-Registered user can edit or delete data entry. Page running on http://52.39.26.86/collection/1/movie/
-![private_page](https://cloud.githubusercontent.com/assets/15114201/14767907/822fd9a2-0a21-11e6-9c28-cf0c242e113c.png)
 
 ## Installed Packages
 
@@ -720,10 +716,15 @@ Reference: [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-t
     (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ sudo pip install Flask
     (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ pip install httplib2
     (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ pip install requests
-    (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ sudo pip install flask-seasurf
+    (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ pip install flask-seasurf
     (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ sudo apt-get install python-psycopg2
     (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ sudo pip install oauth2client
     (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ sudo pip install sqlalchemy
+    NOTE: for python-psycopg2
+    INstall below first
+    sudo apt install libpq-dev python-dev
+    THEN pip install psycopg2
+    
     ```
     Restart apache: `sudo apache2ctl restart`.
 
